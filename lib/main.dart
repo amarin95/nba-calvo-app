@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:guille/audio_description.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,11 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   String directory = '';
   List file = [];
+  List<AudioDescription> audioDescriptionList = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _listofFiles();
+    _initAudioDescriptionList();
+  }
+
+  Future<String> loadAudioDescriptionFromJson() async {
+    return await rootBundle.loadString('assets/data/description.json');
   }
 
   void _incrementCounter() {
@@ -102,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("NBA Sounds"),
       ),
       body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -111,12 +120,16 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8),
               itemCount: file.length,
               itemBuilder: (BuildContext context, int index) {
+                var audioDescriptionitem = audioDescriptionList.firstWhere(
+                    (element) => element.audioName == _getFileName(file[index]),
+                    orElse: () => new AudioDescription("WIP", "WIP", "WIP"));
                 return Container(
-                  height: 50,
+                  height: 75,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(_getFileName(file[index])),
+                      Text(audioDescriptionitem.title),
+                      Text(audioDescriptionitem.description),
                       FloatingActionButton(
                         child: Icon(Icons.play_arrow),
                         onPressed: () => assetsAudioPlayer.open(
@@ -134,5 +147,14 @@ class _MyHomePageState extends State<MyHomePage> {
   _getFileName(String filename) {
     List<String> splittedFilename = filename.split("/");
     return splittedFilename[2].split('.')[0];
+  }
+
+  Future<void> _initAudioDescriptionList() async {
+    String audioDescriptionItem = await loadAudioDescriptionFromJson();
+    List audioDescriptionItemList = json.decode(audioDescriptionItem)["audios"];
+    audioDescriptionList = audioDescriptionItemList
+        .map((e) =>
+            new AudioDescription(e["audioName"], e["title"], e["description"]))
+        .toList();
   }
 }

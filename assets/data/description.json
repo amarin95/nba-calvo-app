@@ -1,0 +1,35 @@
+{
+    "audios": [
+        {
+            "audioName": "acapela",
+            "title": "A Capela",
+            "description": "Clint Capela"
+        },
+        {
+            "audioName": "alfredo",
+            "title": "Alfredo",
+            "description": "Al Horford"
+        },
+        {
+            "audioName": "anteto",
+            "title": "Antetobrazo",
+            "description": "Giannis Antetokounmpo"
+        },
+        {
+            "audioName": "aproposito",
+            "title": "A propósito de Smith",
+            "description": "JR Smith"
+        },
+        {
+            "audioName": "asumelo",
+            "title": "Asumelo",
+            "description": "Cuando un jugador empieza a quedarse calvo"
+        },
+        {
+            "audioName": "bajar de la vida",
+            "title": "Quiere Bajar de la vida",
+            "description": "Cuando un jugador recibe un tapón o un poster tremendo y queda en ridículo"
+        }
+
+    ]
+}
